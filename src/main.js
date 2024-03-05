@@ -26,14 +26,31 @@ function handleSearch(e) {
 
   deleteGallery();
 
-  visibleLoader();
-
   const form = e.target;
-  const searchTag = form.elements.tag.value;
+  const searchTag = form.elements.tag.value.trim();
+
+  if (searchTag === '') {
+    iziToast.show({
+      message: 'Sorry, enter the tag',
+      messageColor: '#fafafb',
+      messageSize: '16px',
+
+      iconUrl: errorIcon,
+
+      position: 'topRight',
+      backgroundColor: '#ef4040',
+    });
+
+    return;
+  }
+
+  visibleLoader();
 
   getPictures(searchTag)
     .then(res => {
       if (res.hits.length === 0) {
+        hidddenLoader();
+
         iziToast.show({
           message:
             'Sorry, there are no images matching your search query. Please try again!',
@@ -46,12 +63,14 @@ function handleSearch(e) {
           backgroundColor: '#ef4040',
         });
       } else {
-        renderGallery(res, gallery);
-        hiddenLoader();
+        renderGallery(res, gallery, loader);
+
         lightbox.refresh();
       }
     })
-    .catch(err => console.log(err));
+    .catch(err => err);
+
+  searchForm.reset();
 }
 
 function deleteGallery() {
@@ -62,8 +81,7 @@ function deleteGallery() {
 function visibleLoader() {
   loader.classList.remove('hidden');
 }
-
-function hiddenLoader() {
+function hidddenLoader() {
   loader.classList.add('hidden');
 }
 

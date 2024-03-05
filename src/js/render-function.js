@@ -1,5 +1,5 @@
 // функції для відображення елементів інтерфейсу
-export default function renderGallery(array, element) {
+export default function renderGallery(array, element, loader) {
   const galleryMarkup = array.hits
     .map(
       ({
@@ -45,5 +45,6 @@ export default function renderGallery(array, element) {
 
   element.insertAdjacentHTML('beforeend', galleryMarkup);
 
+  loader.classList.add('hidden');
   element.classList.remove('hidden');
 }
