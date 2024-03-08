@@ -24,7 +24,7 @@ searchForm.addEventListener('submit', handleSearch);
 function handleSearch(e) {
   e.preventDefault();
 
-  deleteGallery();
+  clearGallery();
 
   const form = e.target;
   const searchTag = form.elements.tag.value.trim();
@@ -44,12 +44,12 @@ function handleSearch(e) {
     return;
   }
 
-  visibleLoader();
+  showLoader();
 
   getPictures(searchTag)
     .then(res => {
       if (res.hits.length === 0) {
-        hidddenLoader();
+        hideLoader();
 
         iziToast.show({
           message:
@@ -73,15 +73,15 @@ function handleSearch(e) {
   searchForm.reset();
 }
 
-function deleteGallery() {
+function clearGallery() {
   gallery.innerHTML = '';
   gallery.classList.add('hidden');
 }
 
-function visibleLoader() {
+function showLoader() {
   loader.classList.remove('hidden');
 }
-function hidddenLoader() {
+function hideLoader() {
   loader.classList.add('hidden');
 }
 
@@ -89,7 +89,7 @@ function hidddenLoader() {
 gallery.addEventListener('click', handleLinkClick);
 
 function handleLinkClick(event) {
-  event.preventDefault();
+  // event.preventDefault();
   if (event.target.nodeName !== 'IMG') {
     return;
   }
